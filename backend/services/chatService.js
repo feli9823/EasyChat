@@ -1,4 +1,4 @@
-import ValidationUser from "../validation/ValidationUser.js";
+
 export class ChatService {
     constructor({ openai, prompt, store, model, maxTokens }) {
         this.openai = openai;
@@ -6,13 +6,12 @@ export class ChatService {
         this.store = store;
         this.model = model;
         this.maxTokens = maxTokens;
-        this.validationUser = new ValidationUser();
+        
     }
 
     async chat({ id, nombre, mensaje }) {
         // Best-effort cleanup to avoid unbounded user map growth.
         this.store.cleanupExpired();
-        this.validationUser.determinarDepartamento(id);
         this.store.appendUserMessage(id, mensaje);
 
         const messages = [
@@ -29,8 +28,7 @@ export class ChatService {
         const completion = await this.openai.chat.completions.create({
             model: this.model,
             messages,
-            tools,
-            toolchoice: "auto",
+            
             max_tokens: this.maxTokens,
         });
 
@@ -38,17 +36,6 @@ export class ChatService {
         this.store.appendAssistantMessage(id, respuestaBot);
         return respuestaBot;
     }
-
-    async  consultasPropiedades(args) {
-        // Implementación de la función para buscar propiedades 
-    }
-
-    async consultasIntranet(args) {
-        
-    }
-
-
-
 
 
 }
