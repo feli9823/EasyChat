@@ -2,22 +2,17 @@ const MAX_NAME_LENGTH = 50;
 const MAX_MESSAGE_LENGTH = 1500;
 const ID_PATTERN = /^[a-zA-Z0-9_-]{1,64}$/;
 
+import { InputUser } from "../validation/inputUser.js";
+
 function isNonEmptyString(value) {
     return typeof value === "string" && value.trim().length > 0;
 }
 
-function normalizeString(value) {
-    return typeof value === "string" ? value.trim() : value;
-}
-
 function validateChatBody(body) {
-    if (!body || typeof body !== "object") {
-        return { ok: false, error: "Body inválido (se esperaba JSON)" };
-    }
+    const normalized = InputUser.fromChatBody(body);
+    if (!normalized.ok) return normalized;
 
-    const id = normalizeString(body.id);
-    const nombre = normalizeString(body.nombre);
-    const mensaje = normalizeString(body.mensaje);
+    const { id, nombre, mensaje } = normalized.value;
 
     if (!isNonEmptyString(id)) {
         return { ok: false, error: "Falta o es inválido: id" };
@@ -44,11 +39,10 @@ function validateChatBody(body) {
 }
 
 function validateDeleteBody(body) {
-    if (!body || typeof body !== "object") {
-        return { ok: false, error: "Body inválido (se esperaba JSON)" };
-    }
+    const normalized = InputUser.fromDeleteBody(body);
+    if (!normalized.ok) return normalized;
 
-    const id = normalizeString(body.id);
+    const { id } = normalized.value;
     if (!isNonEmptyString(id)) {
         return { ok: false, error: "Falta o es inválido: id" };
     }

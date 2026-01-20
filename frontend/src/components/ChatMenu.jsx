@@ -26,6 +26,10 @@ function ChatMenu() {
     });
     }, []);
 
+    useEffect(() => {
+        chatService.ensureReady();
+    }, []);
+
 
 
     const [conversation, setConversation] = useState(initialConversation)
