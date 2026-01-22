@@ -9,24 +9,8 @@ function isNonEmptyString(value) {
 }
 
 function validateChatBody(body) {
-    const normalized = InputUser.fromChatBody(body);
-    if (!normalized.ok) return normalized;
-
-    const { id, nombre, mensaje } = normalized.value;
-
-    if (!isNonEmptyString(id)) {
-        return { ok: false, error: "Falta o es inválido: id" };
-    }
-    if (!ID_PATTERN.test(id)) {
-        return { ok: false, error: "id inválido (solo letras, números, '_' y '-' y máximo 64)" };
-    }
-
-    if (!isNonEmptyString(nombre)) {
-        return { ok: false, error: "Falta o es inválido: nombre" };
-    }
-    if (nombre.length > MAX_NAME_LENGTH) {
-        return { ok: false, error: `nombre demasiado largo (máximo ${MAX_NAME_LENGTH})` };
-    }
+    // Only validate message
+    const { mensaje } = body;
 
     if (!isNonEmptyString(mensaje)) {
         return { ok: false, error: "Falta o es inválido: mensaje" };
@@ -35,21 +19,12 @@ function validateChatBody(body) {
         return { ok: false, error: `mensaje demasiado largo (máximo ${MAX_MESSAGE_LENGTH})` };
     }
 
-    return { ok: true, value: { id, nombre, mensaje } };
+    return { ok: true, value: { mensaje } };
 }
 
 function validateDeleteBody(body) {
-    const normalized = InputUser.fromDeleteBody(body);
-    if (!normalized.ok) return normalized;
-
-    const { id } = normalized.value;
-    if (!isNonEmptyString(id)) {
-        return { ok: false, error: "Falta o es inválido: id" };
-    }
-    if (!ID_PATTERN.test(id)) {
-        return { ok: false, error: "id inválido (solo letras, números, '_' y '-' y máximo 64)" };
-    }
-    return { ok: true, value: { id } };
+    // No body needed for delete, ID comes from token
+    return { ok: true, value: {} };
 }
 
 export function validateChatRequest(req, res, next) {

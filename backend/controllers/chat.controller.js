@@ -7,17 +7,22 @@ export function createChatController({ chatService, store }) {
         },
 
         chat: async (req, res) => {
-            const { id, nombre, mensaje } = req.chatInput;
+            const { mensaje } = req.chatInput;
+            // Use ID and Name from the authenticated token
+            const id = req.user.id;
+            const nombre = req.user.nombre;
+
             try {
                 const respuesta = await chatService.chat({ id, nombre, mensaje });
                 res.json({ respuesta });
             } catch (error) {
+                console.error("Error en chat controller:", error);
                 res.status(500).json({ error: "Error comunicando con OpenAI" });
             }
         },
 
         eliminarMemoria: (req, res) => {
-            const { id } = req.deleteInput;
+            const id = req.user.id;
             store.deleteUser(id);
             res.json({ mensaje: "Memoria eliminada para el usuario con id: " + id });
         },
