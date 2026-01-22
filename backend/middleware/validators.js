@@ -2,7 +2,7 @@ const MAX_NAME_LENGTH = 50;
 const MAX_MESSAGE_LENGTH = 1500;
 const ID_PATTERN = /^[a-zA-Z0-9_-]{1,64}$/;
 
-import { InputUser } from "../validation/inputUser.js";
+import { InputUser } from "../validation/InputUser.js";
 
 function isNonEmptyString(value) {
     return typeof value === "string" && value.trim().length > 0;
