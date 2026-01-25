@@ -5,7 +5,7 @@ import { isReloading } from '../hooks/EstadoPagina';
 import LoadingDots from './LoadingDots';
 import AudioPlayer from './audioEffect/AudioPlayer';
 import Pop from "../../src/assets/Audio/Pop.wav";
-
+import Robot from "./Robot";
 
 const chatService = new ChatService();
 const nav = performance.getEntriesByType?.("navigation")?.[0];
@@ -104,7 +104,7 @@ function ChatMenu() {
                 <div className="px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex items-center gap-3 justify-center">
                         <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
-                            <Bot size={40} />
+                            <Robot estatico={true} />
                         </div>
                         <div>
                             <h1 className="text-3xl font-bold text-accent-foreground">EVA</h1>
@@ -124,7 +124,7 @@ function ChatMenu() {
                         >
                             {message.sender === "bot" && (
                                 <div className="h-14 w-14 rounded-full bg-primary flex items-center justify-center text-primary-foreground shrink-0">
-                                    <Bot size={40} />
+                                    <Robot estatico={false} />
                                 </div>
                             )}
                             <div
